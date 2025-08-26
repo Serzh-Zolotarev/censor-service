@@ -29,8 +29,10 @@ func New(validator censor.ValidatorFunc) *API {
 
 // Регистрация обработчиков API
 func (a *API) endpoints() {
+	a.router.Use(requestIdMiddleware)
 	// валидация комментария
 	a.router.HandleFunc("/", a.validateHandler).Methods(http.MethodPost, http.MethodOptions)
+	a.router.Use(loggingMiddleware)
 }
 
 // Получение маршрутизатора запросов
